@@ -17,9 +17,7 @@ module.exports = server => {
         if (!req.is('application/json')) { return next(new errors.InvalidContentError(err)); }
         try {
 
-            const { }
-
-
+            const foods = await Food.find({});
             res.send(foods);
             next();
         } catch (err) {
