@@ -1,5 +1,7 @@
 const errors = require('restify-errors');
 const FoodType = require('../models/FoodType');
+const Company = require('../models/Company');
+
 
 module.exports = server => {
     // Food Type route
@@ -45,4 +47,28 @@ module.exports = server => {
             return next(new errors.InvalidContentError(err.message));
         }
     });
+    // Company route
+    server.get('/companyinfo', async (req, res, next) => {
+        try {
+            const company = await Company.find({});
+            res.send(company);
+            next();
+        } catch (err) {
+            return next(new errors.InvalidContentError(err.message));
+        }
+    });
+    server.post('/companyinfo', async (req, res, next) => {
+        const { company_code, company_name } = req.body;
+        const company = new Company({
+            company_code, company_name
+        });
+        try {
+            const newCompany = await company.save();
+            res.send({ status: 'success' });
+            next();
+        } catch (err) {
+            return next(new errors.InvalidContentError(err.message));
+        }
+    });
+
 }

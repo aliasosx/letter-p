@@ -19,7 +19,6 @@ exports.authenticate = (username, password) => {
             });
         } catch (err) {
             reject('Authentication failed');
-
         }
     })
 }

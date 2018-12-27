@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const auth = require('../auth');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
-const uuidv4 = require('uuid/v4');
 
 
 module.exports = server => {
@@ -67,6 +66,18 @@ module.exports = server => {
         }
     });
 
+
+    server.post('/authverify', async (req, res, next) => {
+        const token = req.body.token;
+        try {
+            const token_verify = await jwt.verify(token, config.JWT_SECRET);
+            res.send(token_verify);
+            next();
+        } catch (err) {
+            return next(new errors.UnauthorizedError(err));
+        }
+    });
+
     server.del('/users/:id', async (req, res, next) => {
         try {
             const user = await User.findOneAndRemove({ _id: req.params.id });
@@ -86,7 +97,6 @@ module.exports = server => {
         } catch (err) {
             return next(errors.InvalidContentError(err.message));
         }
-
     });
 
 }
