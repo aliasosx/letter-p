@@ -1,7 +1,6 @@
 const errors = require('restify-error');
 const Food = require('../models/Food');
 
-
 module.exports = server => {
     server.get('/foods', async (req, res, next) => {
         try {
@@ -13,12 +12,14 @@ module.exports = server => {
         }
     });
     server.post('/foods', async (req, res, next) => {
-        //Check req is JSON
-        if (!req.is('application/json')) { return next(new errors.InvalidContentError(err)); }
+        console.log(req.body);
         try {
-
-            const foods = await Food.find({});
-            res.send(foods);
+            const { food_name, food_type, photo_path, food_master, food_parents, cost, price, currcode, kitchen_code, created_by, is_enabled } = req.body;
+            const food = new Food({
+                food_name, food_type, photo_path, food_master, food_parents, cost, price, currcode, kitchen_code, created_by, is_enabled
+            });
+            const newFood = await food.save();
+            res.send({ status: 'success ' });
             next();
         } catch (err) {
             return next(new errors.InvalidContentError(err));

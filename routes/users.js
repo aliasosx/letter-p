@@ -56,7 +56,7 @@ module.exports = server => {
             //Create token
 
             const token = jwt.sign(user.toJSON(), config.JWT_SECRET, {
-                expiresIn: '15m',
+                expiresIn: '24h',
             });
             const { iat, exp } = jwt.decode(token);
             console.log(user);

@@ -4,6 +4,8 @@ const timestamp = require('mongoose-timestamp');
 const FoodSchema = new mongoose.Schema({
     food_name: {
         type: String,
+        unique: true,
+        index: true,
         require: true,
         trim: true,
     },
@@ -36,6 +38,11 @@ const FoodSchema = new mongoose.Schema({
         type: Number,
         require: true,
         default: 0
+    },
+    currcode: {
+        type: Number,
+        required: true,
+        default: 418
     },
     kitchen_code: {
         type: String,
