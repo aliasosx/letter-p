@@ -5,6 +5,8 @@ const UserSchema = new mongoose.Schema({
     employee_code: {
         type: String,
         require: true,
+        unique: true,
+        index: true,
         trim: true,
     },
     gender: {
@@ -15,21 +17,29 @@ const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         require: true,
+        unique: true,
+        index: true,
         trim: true,
     },
     email: {
         type: String,
         require: true,
+        unique: true,
+        index: true,
         trim: true,
     },
     mobile: {
         type: String,
         require: true,
+        unique: true,
+        index: true,
         trim: true,
     },
     fullname: {
         type: String,
         require: true,
+        unique: true,
+        index: true,
         trim: true,
     },
     dateOfBirth: {
@@ -55,6 +65,10 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         require: true,
+        trim: true,
+    },
+    menu: {
+        type: Array,
         trim: true,
     }
 });

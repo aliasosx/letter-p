@@ -10,10 +10,10 @@ module.exports = server => {
     server.post('/register', async (req, res, next) => {
 
         try {
-            const { employee_code, gender, username, email, mobile, fullname, dateOfBirth, employ_date, photo, role, password } = req.body;
+            const { employee_code, gender, username, email, mobile, fullname, dateOfBirth, employ_date, photo, role, password, menu } = req.body;
             //const { employee_code } = uuidv4();
             const user = new User({
-                employee_code, gender, username, email, mobile, fullname, dateOfBirth, employ_date, photo, role, password,
+                employee_code, gender, username, email, mobile, fullname, dateOfBirth, employ_date, photo, role, password, menu
             });
 
             bcrypt.genSalt(10, (err, salt) => {
@@ -23,7 +23,7 @@ module.exports = server => {
                     //save user
                     try {
                         const newUser = await user.save();
-                        res.send(201);
+                        res.send({ status: "success" });
                         next();
                     } catch (err) {
                         return next(new errors.InternalError(err.message));
@@ -48,8 +48,9 @@ module.exports = server => {
 
     // Auth
     server.post('/auth', async (req, res, next) => {
-        const { username, password } = req.body;
+
         try {
+            const { username, password } = req.body;
             const user = await auth.authenticate(username, password);
 
             //Create token
@@ -98,5 +99,15 @@ module.exports = server => {
             return next(errors.InvalidContentError(err.message));
         }
     });
+    server.get('/users/:id', (req, res, next) => {
 
+        try {
+            const user = User.find({ _id: req.params.id });
+            console.log(user);
+            res.send(user);
+            next();
+        } catch (err) {
+            return next(new errors.InvalidContentError(err));
+        }
+    });
 }

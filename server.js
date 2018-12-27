@@ -4,25 +4,31 @@ const config = require('./config');
 const corsMiddleware = require('restify-cors-middleware')
 const rjwt = require('restify-jwt-community');
 const server = restify.createServer();
+
 //middleware
+
 server.use(restify.plugins.bodyParser());
+
 // Setup for pass obsolate
+
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
+
 // Passing cors
 
 const cors = corsMiddleware({
-    preflightMaxAge: 5,
+    preflightMaxAge: 1000,
     origins: ['*'],
-    allowHeaders: ['API-Token'],
-    exposeHeaders: ['API-Token-Expiry']
+    allowHeaders: ['authorization'],
+    exposeHeaders: []
 });
 
 server.pre(cors.preflight);
 server.use(cors.actual);
 
 //Protect router
-server.use(rjwt({ secret: config.JWT_SECRET }).unless({ path: ['/auth', '/authverify'] }));
+
+server.use(rjwt({ secret: config.JWT_SECRET }).unless({ path: ['/auth', '/authverify', '/register'] }));
 server.listen(config.PORT, () => {
     mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true });
 });
