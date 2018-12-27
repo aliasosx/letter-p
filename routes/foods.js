@@ -12,7 +12,7 @@ module.exports = server => {
             return next(new errors.InvalidContentError(err));
         }
     });
-    server.post('foods', async (req, res, next) => {
+    server.post('/foods', async (req, res, next) => {
         //Check req is JSON
         if (!req.is('application/json')) { return next(new errors.InvalidContentError(err)); }
         try {

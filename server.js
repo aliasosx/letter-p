@@ -5,6 +5,7 @@ const config = require('./config');
 const server = restify.createServer();
 //middleware
 server.use(restify.plugins.bodyParser());
+mongoose.set('useFindAndModify', false);
 
 server.listen(config.PORT, () => {
     mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true });
