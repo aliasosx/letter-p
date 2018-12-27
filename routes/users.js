@@ -99,10 +99,9 @@ module.exports = server => {
             return next(errors.InvalidContentError(err.message));
         }
     });
-    server.get('/users/:id', (req, res, next) => {
-
+    server.get('/users/:id', async (req, res, next) => {
         try {
-            const user = User.find({ _id: req.params.id });
+            const user = await User.findById({ _id: req.params.id });
             console.log(user);
             res.send(user);
             next();
