@@ -25,7 +25,7 @@ const FoodSchema = new mongoose.Schema({
         default: 0
     },
     food_parents: {
-        type: Number,
+        type: String,
         require: true,
         default: 0,
     },
@@ -58,6 +58,11 @@ const FoodSchema = new mongoose.Schema({
         type: Number,
         require: true,
         default: 1
+    },
+    enable_child: {
+        type: Number,
+        require: true,
+        default: 0
     }
 
 });

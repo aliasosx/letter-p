@@ -1,7 +1,7 @@
 const errors = require('restify-errors');
 const FoodType = require('../models/FoodType');
 const Company = require('../models/Company');
-
+const Kitchen = require('../models/Kitchen');
 
 module.exports = server => {
     // Food Type route
@@ -70,5 +70,52 @@ module.exports = server => {
             return next(new errors.InvalidContentError(err.message));
         }
     });
+    // Kitchen
+    server.get('/kitchens', async (req, res, next) => {
+        try {
+            const kitchens = await Kitchen.find({});
+            res.send(kitchens);
+            next();
+        } catch (err) {
+            return next(new errors.InvalidContentError(err.message));
+        }
+    });
+
+    server.post('/kitchens', async (req, res, next) => {
+        const { kitchen_code, kitchen_name, kitchen_staff } = req.body;
+        try {
+            const kitchen = new Kitchen({
+                kitchen_code, kitchen_name, kitchen_staff
+            });
+            const newKitchen = await kitchen.save();
+            res.send({ status: 'success' });
+            next();
+            console.log('******************** Add Kitchen done ********************');
+        } catch (err) {
+            return next(new errors.InvalidContentError(err.message));
+        }
+    });
+    server.put('/kitchens/:id', async (req, res, next) => {
+        try {
+            const kitchen = Kitchen.findByIdAndUpdate({ _id: req.params.id }, req.body);
+            res.send({ status: 'success' });
+            next();
+        } catch (err) {
+            return next(new errors.InvalidContentError(err.message));
+        }
+    });
+    server.del('/kitchens/:id', async (req, res, next) => {
+        try {
+            const kitchen = await Kitchen.findByIdAndRemove({ _id: req.params.id });
+            res.send({ status: 'success' });
+            next();
+            console.log('******************** delete done ' + id + ' ********************');
+        } catch (err) {
+            return next(new errors.InvalidContentError(err.message));
+        }
+    });
+
+    // Upload File Photo
+    
 
 }
